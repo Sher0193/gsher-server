@@ -117,3 +117,6 @@ dist
 
 # other
 private
+public
+build
+sslcerts
