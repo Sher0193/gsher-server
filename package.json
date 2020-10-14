@@ -4,22 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write '{*,public/*,src/**/*}.{js,json,css,md}'",
+    "lint": "eslint src --fix; exit 0",
+    "fix": "npm run prettier && npm run lint"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "eslint": "^7.11.0",
     "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
+    "formidable": "^1.2.2",
     "fs": "0.0.1-security",
     "http": "0.0.1-security",
     "https": "^1.0.0",
+    "lint": "^0.7.0",
+    "multer": "^1.4.2",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "sharp": "^0.26.1"
   }
 }
