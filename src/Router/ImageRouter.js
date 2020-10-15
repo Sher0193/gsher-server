@@ -1,6 +1,7 @@
 const multer = require("multer");
 const formidable = require("formidable");
 const sharp = require("sharp");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,6 +31,7 @@ const upload = multer({
 class ImageRouter {
   constructor(app, db) {
     this.uploadImage(app, db);
+    this.deleteImage(app, db);
   }
 
   uploadImage(app, db) {
@@ -52,48 +54,35 @@ class ImageRouter {
                 msg: "Thumbnail generation issue.",
               });
               return;
-            } else {
-              let body = req.body;
-              let cols = [
-                body.name,
-                body.dimensions,
-                body.meta,
-                req.file.filename,
-                body.category,
-                parseInt(body.price),
-                body.sold === "true" ? 1 : 0,
-                body.date,
-              ];
-              console.log(cols);
-              db.query(
-                "INSERT INTO posts (name, dimensions, meta, link, category, price, sold, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                cols,
-                (err, result) => {
-                  if (err) {
-                    res.json({
-                      success: false,
-                      msg: "Database insert error.",
-                    });
-                    return;
-                  } else if (result.affectedRows < 1) {
-                    res.json({
-                      success: false,
-                      msg: "Database insert issue.",
-                    });
-                    return;
-                  }
-                  {
-                    res.json({
-                      success: true,
-                      id: result.insertId,
-                    });
-                  }
-                }
-              );
             }
+            res.json({
+              success: true,
+              msg: "Uploaded image with no db query.",
+              filename: req.file.filename,
+            });
           }
         );
-      console.log(req.body.name + "&&" + req.file.filename);
+    });
+  }
+
+  deleteImage(app, db) {
+    app.delete("/deleteimage", (req, res) => {
+      if (req.body.filename) {
+        try {
+          fs.unlinkSync("public/img/thumbnails/" + req.body.filename);
+          fs.unlinkSync("public/img/" + req.body.filename);
+          res.json({
+            success: true,
+            msg: "Removed thumbnail and image file " + req.body.filename,
+          });
+        } catch (e) {
+          res.json({
+            success: false,
+            msg: "Issue removing files.",
+          });
+          return;
+        }
+      }
     });
   }
 }
