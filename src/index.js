@@ -6,9 +6,7 @@ const https = require("https");
 const fs = require("fs");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
-const LoginRouter = require("./Router/LoginRouter");
-const DatabaseRouter = require("./Router/DatabaseRouter");
-const ImageRouter = require("./Router/ImageRouter");
+const db = require("./models/db.js");
 
 const config = require("../private/config.json");
 
@@ -16,14 +14,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../build")));
 app.use(express.json());
 
-/***************** DATABASE *************************/
-const db = mysql.createConnection({
-  host: config.dbhost,
-  user: config.dbuser,
-  password: config.dbpass,
-  database: config.dbname,
-});
-
+// initial db connection
 db.connect(function (err) {
   if (err) {
     console.log("Database connection error.");
@@ -74,9 +65,7 @@ app.use(function (req, res, next) {
 
 /***************** ROUTERS *************************/
 
-new LoginRouter(app, db);
-new DatabaseRouter(app, db);
-new ImageRouter(app, db);
+require("./routes/routes.js")(app);
 
 /***************** WEBSITE *************************/
 
@@ -92,10 +81,10 @@ new ImageRouter(app, db);
     console.log('HTTPS listening on PORT 443');
 });*/
 
-app.listen(3001, "0.0.0.0", () => {
-  console.log("running on port 3000");
+app.listen(config.port, "0.0.0.0", () => {
+  console.log("running on port " + config.port);
 });
 
 app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
