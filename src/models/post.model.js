@@ -9,6 +9,7 @@ const Post = function (post) {
   this.price = post.price;
   this.sold = post.sold;
   this.date_painted = post.date_painted;
+  this.featured = post.featured;
 };
 
 // create a new post
@@ -63,6 +64,19 @@ Post.getByCategories = (order, categories, result) => {
   );
 };
 
+Post.getFeatured = (result) => {
+    sql.query(`SELECT * FROM posts WHERE featured = 1`, (err, res) => {
+              if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("posts: ", res);
+      result(null, res);
+    });
+};
+
 // return all posts
 Post.getAll = (order, result) => {
   sql.query(`SELECT * FROM posts ORDER BY ${order}`, (err, res) => {
@@ -80,7 +94,7 @@ Post.getAll = (order, result) => {
 // update a post at id by fields in post
 Post.updateById = (id, post, result) => {
   sql.query(
-    "UPDATE posts SET name = ?, dimensions = ?, meta = ?, link = ?, price = ?, sold = ?, date_painted = ? WHERE id = ?",
+    "UPDATE posts SET name = ?, dimensions = ?, meta = ?, link = ?, price = ?, sold = ?, date_painted = ?, featured = ? WHERE id = ?",
     [
       post.name,
       post.dimensions,
@@ -89,6 +103,7 @@ Post.updateById = (id, post, result) => {
       post.price,
       post.sold,
       post.date_painted,
+      post.featured,
       id,
     ],
     (err, res) => {

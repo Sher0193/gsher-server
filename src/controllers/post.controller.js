@@ -17,6 +17,7 @@ exports.create = (req, res) => {
     price: parseInt(body.price),
     sold: body.sold === "true" ? 1 : 0,
     date_painted: body.date,
+    featured: body.featured === "true" ? 1 : 0,
   });
   let postResult = null;
   Post.create(post, (err, data) => {
@@ -49,7 +50,16 @@ exports.create = (req, res) => {
 };
 
 exports.findMany = (req, res) => {
-  if (req.query.tags) {
+    if (req.query.featured) {
+        Post.getFeatured((err, data) => {
+             if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while retrieving posts.",
+        });
+        else res.send({ success: true, data: data })
+        });
+    }
+  else if (req.query.tags) {
     console.log(req.query.tags);
     Post.getByCategories("date_painted", req.query.tags, (err, data) => {
       if (err)
@@ -101,8 +111,9 @@ exports.update = (req, res) => {
       meta: body.meta,
       link: body.filename,
       price: parseInt(body.price),
-      sold: body.sold === "true" ? 1 : 0,
+      sold: body.sold,
       date_painted: body.date,
+      featured: body.featured === null ? 0 : body.featured,
     }),
     (err, data) => {
       if (err) {
@@ -116,7 +127,7 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        if (data.id && body.categories.length > 0) {
+        if (data.id && body.categories) {
           PostCategories.removeAllByPost(data.id, (err, delResult) => {
             if (err)
               res.status(500).send({
