@@ -50,23 +50,39 @@ exports.create = (req, res) => {
 };
 
 exports.findMany = (req, res) => {
-    if (req.query.featured) {
-        Post.getFeatured((err, data) => {
-             if (err)
+  const PER_PAGE = 9;
+  if (req.query.featured) {
+    Post.getFeatured((err, data) => {
+      if (err)
         res.status(500).send({
           message: err.message || "Some error occurred while retrieving posts.",
         });
-        else res.send({ success: true, data: data })
-        });
-    }
-  else if (req.query.tags) {
+      else res.send({ success: true, data: data });
+    });
+  } else if (req.query.tags) {
     console.log(req.query.tags);
     Post.getByCategories("date_painted", req.query.tags, (err, data) => {
       if (err)
         res.status(500).send({
           message: err.message || "Some error occurred while retrieving posts.",
         });
-      else res.send({ success: true, data: data });
+      else {
+        finalData = data;
+        if (req.query.paginate) {
+          let paginatedData = [];
+          let page = [];
+          for (let i = 0; i < data.length; i++) {
+            if (page.length >= PER_PAGE) {
+              paginatedData.push(page);
+              page = [];
+            }
+            page.push(data[i]);
+          }
+          paginatedData.push(page);
+          finalData = paginatedData;
+        }
+        res.send({ success: true, data: finalData });
+      }
     });
   } else {
     Post.getAll("date_painted", (err, data) => {
@@ -74,7 +90,23 @@ exports.findMany = (req, res) => {
         res.status(500).send({
           message: err.message || "Some error occurred while retrieving posts.",
         });
-      else res.send({ success: true, data: data });
+      else {
+        finalData = data;
+        if (req.query.paginate) {
+          let paginatedData = [];
+          let page = [];
+          for (let i = 0; i < data.length; i++) {
+            if (page.length >= PER_PAGE) {
+              paginatedData.push(page);
+              page = [];
+            }
+            page.push(data[i]);
+          }
+          paginatedData.push(page);
+          finalData = paginatedData;
+        }
+        res.send({ success: true, data: finalData });
+      }
     });
   }
 };

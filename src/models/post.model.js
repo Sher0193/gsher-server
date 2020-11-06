@@ -65,16 +65,16 @@ Post.getByCategories = (order, categories, result) => {
 };
 
 Post.getFeatured = (result) => {
-    sql.query(`SELECT * FROM posts WHERE featured = 1`, (err, res) => {
-              if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
+  sql.query(`SELECT * FROM posts WHERE featured = 1`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
 
-      console.log("posts: ", res);
-      result(null, res);
-    });
+    console.log("posts: ", res);
+    result(null, res);
+  });
 };
 
 // return all posts

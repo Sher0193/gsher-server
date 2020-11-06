@@ -3,4 +3,5 @@ module.exports = (app) => {
   require("./image.route.js")(app);
   require("./post.route.js")(app);
   require("./category.route.js")(app);
+  require("./site.route.js")(app);
 };

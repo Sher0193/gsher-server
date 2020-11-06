@@ -2,7 +2,7 @@ const multer = require("multer");
 const formidable = require("formidable");
 const sharp = require("sharp");
 const fs = require("fs");
-const path = require('path');
+const path = require("path");
 
 const featuredDir = path.join(__dirname, "../../public/img/featured");
 
@@ -81,24 +81,24 @@ exports.deleteImage = (req, res) => {
 };
 
 exports.featured = (req, res) => {
-    fs.readdir(featuredDir, function (err, files) {
+  fs.readdir(featuredDir, function (err, files) {
     //handling error
     if (err) {
-        console.log('Unable to scan directory: ' + err);
-        res.json({
-            success: false, 
-            msg: "Unable to scan directory " + featuredDir
-        });
-        return;
-    } 
-//     let data = [];
-//     //listing all files using forEach
-//     files.forEach(function (file) {
-//         data.push(file);
-//     });
+      console.log("Unable to scan directory: " + err);
+      res.json({
+        success: false,
+        msg: "Unable to scan directory " + featuredDir,
+      });
+      return;
+    }
+    //     let data = [];
+    //     //listing all files using forEach
+    //     files.forEach(function (file) {
+    //         data.push(file);
+    //     });
     res.json({
-        success: true,
-        data: files,
+      success: true,
+      data: files,
     });
-});
+  });
 };

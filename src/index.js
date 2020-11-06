@@ -50,7 +50,7 @@ app.use(
 /*** CROSSS ORIGIN SHIT - CHANGE TO DISALLOW CROSS ORIGIN BY PRODUCTION ***/
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://192.168.86.185:3000");
-  res.header("Access-Control-Allow-Methods", "POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
