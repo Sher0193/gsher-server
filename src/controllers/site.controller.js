@@ -48,7 +48,9 @@ exports.postStatement = (req, res) => {
 
 exports.getAbout = (req, res) => {
   try {
-    let aboutJson = require("../../public/files/about.json");
+    let aboutJson = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../../public/files/about.json"))
+    );
     res.json({
       success: true,
       data: aboutJson,
