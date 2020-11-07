@@ -153,39 +153,49 @@ exports.update = (req, res) => {
           res.status(404).send({
             message: `Not found Post with id ${req.params.postId}.`,
           });
+          return;
         } else {
           res.status(500).send({
             message: "Error updating Post with id " + req.params.postId,
           });
+          return;
         }
       } else {
         if (data.id && body.categories) {
           PostCategories.removeAllByPost(data.id, (err, delResult) => {
-            if (err)
+            if (err) {
               res.status(500).send({
                 message:
-                  err.message ||
-                  "Some error occurred while clearing old categories.",
+                  (err.message ||
+                  "Some error occurred while clearing old categories."),
               });
+            return;
+            }
           });
           let assocArray = [];
           for (let i = 0; i < body.categories.length; i++) {
             assocArray.push([data.id, body.categories[i]]);
           }
-          PostCategories.create(assocArray, (err, catData) => {
-            if (err)
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while creating new categories.",
-              });
-            else {
-              res.send({ success: true, postData: data, catData: catData });
-              return;
-            }
-          });
+          if (assocArray.length > 0) {
+            PostCategories.create(assocArray, (err, catData) => {
+                if (err) {
+                    res.status(500).send({
+                        message:
+                        (err.message ||
+                        "Some error occurred while creating new categories."),
+                    });
+                    return;
+                }
+                    else {
+                    res.send({ success: true, postData: data, catData: catData });
+                    return;
+                }
+            });
+          } else {
+              res.send({ success: true, postData: data });
+          }
         } else {
-          res.send({ success: true, postData: data });
+            res.send({ success: true, postData: data });
         }
       }
     }

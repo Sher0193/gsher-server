@@ -127,12 +127,6 @@ Post_Category.removeAllByPost = (postId, result) => {
         return;
       }
 
-      if (res.affectedRows == 0) {
-        // not found Customer with the id
-        result({ kind: "not_found" }, null);
-        return;
-      }
-
       console.log("deleted assoc with post id: ", postId);
       result(null, res);
     }
