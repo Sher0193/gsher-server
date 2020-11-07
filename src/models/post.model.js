@@ -49,7 +49,7 @@ Post.findById = (postId, result) => {
 // find all posts with matching categories
 Post.getByCategories = (order, categories, result) => {
   sql.query(
-    `SELECT posts.* FROM posts LEFT JOIN posts_categories ON (posts.id = posts_categories.posts_id) LEFT JOIN categories ON (posts_categories.categories_id = categories.id) WHERE categories.id IN (?) GROUP BY posts.id ORDER BY ${order}`,
+    `SELECT posts.* FROM posts LEFT JOIN posts_categories ON (posts.id = posts_categories.posts_id) LEFT JOIN categories ON (posts_categories.categories_id = categories.id) WHERE categories.id IN (?) GROUP BY posts.id ORDER BY ${order} DESC`,
     [categories],
     (err, res) => {
       if (err) {
@@ -79,7 +79,7 @@ Post.getFeatured = (result) => {
 
 // return all posts
 Post.getAll = (order, result) => {
-  sql.query(`SELECT * FROM posts ORDER BY ${order}`, (err, res) => {
+  sql.query(`SELECT * FROM posts ORDER BY ${order} DESC`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
