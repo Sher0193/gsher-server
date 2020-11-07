@@ -65,7 +65,7 @@ Post.getByCategories = (order, categories, result) => {
 };
 
 Post.getFeatured = (result) => {
-  sql.query(`SELECT * FROM posts WHERE featured = 1`, (err, res) => {
+  sql.query(`SELECT * FROM posts WHERE featured = 1 ORDER BY date_painted DESC`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
