@@ -2,11 +2,11 @@ module.exports = (app) => {
   const Login = require("../controllers/login.controller.js");
 
   // LOG IN
-  app.post("/login", Login.logIn);
+  app.post("/api/login", Login.logIn);
 
   //LOG OUT
-  app.post("/logout", Login.logOut);
+  app.post("/api/logout", Login.logOut);
 
   //CHECK IF LOGGED IN
-  app.post("/isLoggedIn", Login.isLoggedIn);
+  app.post("/api/isLoggedIn", Login.isLoggedIn);
 };

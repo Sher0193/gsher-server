@@ -5,11 +5,11 @@ module.exports = (app) => {
   app.get("/featuredimages", image.featured);
 
   app.post(
-    "/uploadimage",
+    "/api/uploadimage",
     auth.authenticate,
     image.upload.single("image"),
     image.uploadThumbnail
   );
 
-  app.delete("/deleteimage", auth.authenticate, image.deleteImage);
+  app.delete("/api/deleteimage", auth.authenticate, image.deleteImage);
 };
