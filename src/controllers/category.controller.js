@@ -21,7 +21,7 @@ exports.create = (req, res) => {
 
 exports.findMany = (req, res) => {
   if (req.query.posts) {
-    console.log(req.query.posts);
+    //console.log(req.query.posts);
     Category.getByPosts(req.query.posts, (err, data) => {
       if (err)
         res.status(500).send({
@@ -63,7 +63,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!",
     });
   }
-  console.log(req.body);
+  //console.log(req.body);
   const body = req.body;
   Category.updateById(
     req.params.catId,
