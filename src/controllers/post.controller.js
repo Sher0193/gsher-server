@@ -166,10 +166,10 @@ exports.update = (req, res) => {
             if (err) {
               res.status(500).send({
                 message:
-                  (err.message ||
-                  "Some error occurred while clearing old categories."),
+                  err.message ||
+                  "Some error occurred while clearing old categories.",
               });
-            return;
+              return;
             }
           });
           let assocArray = [];
@@ -178,24 +178,23 @@ exports.update = (req, res) => {
           }
           if (assocArray.length > 0) {
             PostCategories.create(assocArray, (err, catData) => {
-                if (err) {
-                    res.status(500).send({
-                        message:
-                        (err.message ||
-                        "Some error occurred while creating new categories."),
-                    });
-                    return;
-                }
-                    else {
-                    res.send({ success: true, postData: data, catData: catData });
-                    return;
-                }
+              if (err) {
+                res.status(500).send({
+                  message:
+                    err.message ||
+                    "Some error occurred while creating new categories.",
+                });
+                return;
+              } else {
+                res.send({ success: true, postData: data, catData: catData });
+                return;
+              }
             });
           } else {
-              res.send({ success: true, postData: data });
+            res.send({ success: true, postData: data });
           }
         } else {
-            res.send({ success: true, postData: data });
+          res.send({ success: true, postData: data });
         }
       }
     }

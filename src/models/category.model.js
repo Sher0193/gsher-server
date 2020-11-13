@@ -28,7 +28,7 @@ Category.findById = (catId, result) => {
       }
 
       if (res.length) {
-        console.log("found category: ", res[0]);
+        //console.log("found category: ", res[0]);
         result(null, res[0]);
         return;
       }
@@ -50,7 +50,7 @@ Category.getByPosts = (posts, result) => {
         return;
       }
 
-      console.log("posts: ", res);
+      //console.log("posts: ", res);
       result(null, res);
     }
   );
@@ -64,7 +64,7 @@ Category.getAll = (result) => {
       return;
     }
 
-    console.log("categories: ", res);
+    //console.log("categories: ", res);
     result(null, res);
   });
 };

@@ -36,7 +36,7 @@ Post.findById = (postId, result) => {
     }
 
     if (res.length) {
-      console.log("found post: ", res[0]);
+      //console.log("found post: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -58,23 +58,26 @@ Post.getByCategories = (order, categories, result) => {
         return;
       }
 
-      console.log("posts: ", res);
+      //console.log("posts: ", res);
       result(null, res);
     }
   );
 };
 
 Post.getFeatured = (result) => {
-  sql.query(`SELECT * FROM posts WHERE featured = 1 ORDER BY date_painted DESC`, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    `SELECT * FROM posts WHERE featured = 1 ORDER BY date_painted DESC`,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-    console.log("posts: ", res);
-    result(null, res);
-  });
+      //console.log("posts: ", res);
+      result(null, res);
+    }
+  );
 };
 
 // return all posts
@@ -86,7 +89,7 @@ Post.getAll = (order, result) => {
       return;
     }
 
-    console.log("posts: ", res);
+    //console.log("posts: ", res);
     result(null, res);
   });
 };

@@ -33,7 +33,7 @@ Post_Category.findById = (assocId, result) => {
     }
 
     if (res.length) {
-      console.log("found assoc: ", res[0]);
+      //console.log("found assoc: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -52,7 +52,7 @@ Post_Category.getAll = (result) => {
       return;
     }
 
-    console.log("assocs: ", res);
+    //console.log("assocs: ", res);
     result(null, res);
   });
 };

@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.post(
     "/api/uploadimage",
     auth.authenticate,
-    image.upload.single("image"),
+    image.upload,
     image.uploadThumbnail
   );
 

@@ -17,28 +17,36 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
+    return cb(null, true);
   } else {
-    cb(null, false);
+    return cb(new Error("Invalid image type. JPEG/PNG accepted."));
   }
 };
 
-exports.upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 4000 * 4000 * 5,
-  },
-  fileFilter: fileFilter,
-});
+const multerUpload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 4000 * 4000 * 5,
+    },
+    fileFilter: fileFilter,
+  }).single("image");
+
+
+exports.upload = (req, res, next) => {
+    multerUpload(req, res, function (err) {
+    if (err) {
+      let msg = err ? err.message : "An issue occurred while uploading the image.";
+      res.json({
+        success: false,
+        msg: msg,
+      });
+      return;
+    }
+    next();
+  });
+};
 
 exports.uploadThumbnail = (req, res) => {
-  if (!req.file) {
-    res.json({
-      success: false,
-      msg: "Image uploading issue.",
-    });
-    return;
-  }
   sharp(req.file.path)
     .resize(500, null)
     .toFile(
