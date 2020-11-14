@@ -9,7 +9,7 @@ const Post = function (post) {
   this.price = post.price;
   this.sold = post.sold;
   this.date_painted = post.date_painted;
-  this.featured = post.featured;
+  (this.featured = post.featured), (this.vendor_id = post.vendor);
 };
 
 // create a new post
@@ -97,7 +97,7 @@ Post.getAll = (order, result) => {
 // update a post at id by fields in post
 Post.updateById = (id, post, result) => {
   sql.query(
-    "UPDATE posts SET name = ?, dimensions = ?, meta = ?, link = ?, price = ?, sold = ?, date_painted = ?, featured = ? WHERE id = ?",
+    "UPDATE posts SET name = ?, dimensions = ?, meta = ?, link = ?, price = ?, sold = ?, date_painted = ?, featured = ?, vendor_id = ? WHERE id = ?",
     [
       post.name,
       post.dimensions,
@@ -107,6 +107,7 @@ Post.updateById = (id, post, result) => {
       post.sold,
       post.date_painted,
       post.featured,
+      post.vendor_id,
       id,
     ],
     (err, res) => {

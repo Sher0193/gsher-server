@@ -24,18 +24,19 @@ const fileFilter = (req, file, cb) => {
 };
 
 const multerUpload = multer({
-    storage: storage,
-    limits: {
-      fileSize: 4000 * 4000 * 5,
-    },
-    fileFilter: fileFilter,
-  }).single("image");
-
+  storage: storage,
+  limits: {
+    fileSize: 4000 * 4000 * 5,
+  },
+  fileFilter: fileFilter,
+}).single("image");
 
 exports.upload = (req, res, next) => {
-    multerUpload(req, res, function (err) {
+  multerUpload(req, res, function (err) {
     if (err) {
-      let msg = err ? err.message : "An issue occurred while uploading the image.";
+      let msg = err
+        ? err.message
+        : "An issue occurred while uploading the image.";
       res.json({
         success: false,
         msg: msg,

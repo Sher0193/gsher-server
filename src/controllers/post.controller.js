@@ -18,6 +18,7 @@ exports.create = (req, res) => {
     sold: body.sold === "true" ? 1 : 0,
     date_painted: body.date,
     featured: body.featured === "true" ? 1 : 0,
+    vendor: body.vendor && body.vendor >= 0 ? body.vendor : null,
   });
   let postResult = null;
   Post.create(post, (err, data) => {
@@ -146,6 +147,7 @@ exports.update = (req, res) => {
       sold: body.sold,
       date_painted: body.date,
       featured: body.featured === null ? 0 : body.featured,
+      vendor: body.vendor && body.vendor >= 0 ? body.vendor : null,
     }),
     (err, data) => {
       if (err) {

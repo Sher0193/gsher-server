@@ -13,7 +13,8 @@ exports.create = (req, res) => {
   Category.create(cat, (err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Post.",
+        message:
+          err.message || "Some error occurred while creating the Category.",
       });
     else res.send({ success: true, data: data });
   });
@@ -34,7 +35,8 @@ exports.findMany = (req, res) => {
     Category.getAll((err, data) => {
       if (err)
         res.status(500).send({
-          message: err.message || "Some error occurred while retrieving posts.",
+          message:
+            err.message || "Some error occurred while retrieving categories.",
         });
       else res.send({ success: true, data: data });
     });
