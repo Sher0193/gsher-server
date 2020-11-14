@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Logging = require("../logging.js");
 
 // constructor
 const Post = function (post) {
@@ -16,11 +17,11 @@ const Post = function (post) {
 Post.create = (newPost, result) => {
   sql.query("INSERT INTO posts SET ?", newPost, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
-    console.log("created post ", { id: res.insertId, ...newPost });
+    Logging.log("created post ", { id: res.insertId, ...newPost });
     result(null, { id: res.insertId, ...newPost });
     return res.insertId;
   });
@@ -30,13 +31,13 @@ Post.create = (newPost, result) => {
 Post.findById = (postId, result) => {
   sql.query(`SELECT * FROM posts WHERE id = ${postId} LIMIT 1`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
 
     if (res.length) {
-      //console.log("found post: ", res[0]);
+      //Logging.log("found post: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -53,12 +54,12 @@ Post.getByCategories = (order, categories, result) => {
     [categories],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
 
-      //console.log("posts: ", res);
+      //Logging.log("posts: ", res);
       result(null, res);
     }
   );
@@ -69,12 +70,12 @@ Post.getFeatured = (result) => {
     `SELECT * FROM posts WHERE featured = 1 ORDER BY date_painted DESC`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
 
-      //console.log("posts: ", res);
+      //Logging.log("posts: ", res);
       result(null, res);
     }
   );
@@ -84,12 +85,12 @@ Post.getFeatured = (result) => {
 Post.getAll = (order, result) => {
   sql.query(`SELECT * FROM posts ORDER BY ${order} DESC`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    //console.log("posts: ", res);
+    //Logging.log("posts: ", res);
     result(null, res);
   });
 };
@@ -112,7 +113,7 @@ Post.updateById = (id, post, result) => {
     ],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
@@ -123,7 +124,7 @@ Post.updateById = (id, post, result) => {
         return;
       }
 
-      console.log("updated post: ", { id: id, ...post });
+      Logging.log("updated post: ", { id: id, ...post });
       result(null, { id: id, ...post });
     }
   );
@@ -133,7 +134,7 @@ Post.updateById = (id, post, result) => {
 Post.remove = (id, result) => {
   sql.query("DELETE FROM posts WHERE id = ?", id, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
@@ -144,7 +145,7 @@ Post.remove = (id, result) => {
       return;
     }
 
-    console.log("deleted post with id: ", id);
+    Logging.log("deleted post with id: ", id);
     result(null, res);
   });
 };
@@ -153,12 +154,12 @@ Post.remove = (id, result) => {
 Post.removeAll = (result) => {
   sql.query("DELETE FROM posts", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} posts`);
+    Logging.log(`deleted ${res.affectedRows} posts`);
     result(null, res);
   });
 };

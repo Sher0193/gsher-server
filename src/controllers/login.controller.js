@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model.js");
+const Logging = require("../logging.js");
 
 exports.logIn = (req, res) => {
   let username = req.body.username;

@@ -1,4 +1,5 @@
 const Category = require("../models/category.model.js");
+const Logging = require("../logging.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -22,7 +23,7 @@ exports.create = (req, res) => {
 
 exports.findMany = (req, res) => {
   if (req.query.posts) {
-    //console.log(req.query.posts);
+    //Logging.log(req.query.posts);
     Category.getByPosts(req.query.posts, (err, data) => {
       if (err)
         res.status(500).send({
@@ -65,7 +66,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!",
     });
   }
-  //console.log(req.body);
+  //Logging.log(req.body);
   const body = req.body;
   Category.updateById(
     req.params.catId,

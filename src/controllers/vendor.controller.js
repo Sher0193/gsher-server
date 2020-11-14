@@ -1,4 +1,5 @@
 const Vendor = require("../models/vendor.model.js");
+const Logging = require("../logging.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -53,7 +54,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!",
     });
   }
-  //console.log(req.body);
+  //Logging.log(req.body);
   const body = req.body;
   Vendor.updateById(
     req.params.vendId,

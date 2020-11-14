@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Logging = require("../logging.js");
 
 // constructor
 const Category = function (category) {
@@ -8,11 +9,11 @@ const Category = function (category) {
 Category.create = (newCategory, result) => {
   sql.query("INSERT INTO categories SET ?", newCategory, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
-    console.log("created category ", { id: res.insertId, ...newCategory });
+    Logging.log("created category ", { id: res.insertId, ...newCategory });
     result(null, { id: res.insertId, ...newCategory });
   });
 };
@@ -22,13 +23,13 @@ Category.findById = (catId, result) => {
     `SELECT * FROM categories WHERE id = ${catId} LIMIT 1`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(err, null);
         return;
       }
 
       if (res.length) {
-        //console.log("found category: ", res[0]);
+        //Logging.log("found category: ", res[0]);
         result(null, res[0]);
         return;
       }
@@ -45,12 +46,12 @@ Category.getByPosts = (posts, result) => {
     [posts],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
 
-      //console.log("posts: ", res);
+      //Logging.log("posts: ", res);
       result(null, res);
     }
   );
@@ -59,12 +60,12 @@ Category.getByPosts = (posts, result) => {
 Category.getAll = (result) => {
   sql.query("SELECT * FROM categories", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    //console.log("categories: ", res);
+    //Logging.log("categories: ", res);
     result(null, res);
   });
 };
@@ -75,7 +76,7 @@ Category.updateById = (catId, category, result) => {
     [category.category, catId],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: " + err);
         result(null, err);
         return;
       }
@@ -86,7 +87,7 @@ Category.updateById = (catId, category, result) => {
         return;
       }
 
-      console.log("updated category: ", { id: catId, ...category });
+      Logging.log("updated category: ", { id: catId, ...category });
       result(null, { id: catId, ...category });
     }
   );
@@ -95,7 +96,7 @@ Category.updateById = (catId, category, result) => {
 Category.remove = (catId, result) => {
   sql.query("DELETE FROM categories WHERE id = ?", catId, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
@@ -106,7 +107,7 @@ Category.remove = (catId, result) => {
       return;
     }
 
-    console.log("deleted category with id: ", catId);
+    Logging.log("deleted category with id: " + catId);
     result(null, res);
   });
 };
@@ -114,12 +115,12 @@ Category.remove = (catId, result) => {
 Category.removeAll = (result) => {
   sql.query("DELETE FROM categories", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} categories`);
+    Logging.log(`deleted ${res.affectedRows} categories`);
     result(null, res);
   });
 };

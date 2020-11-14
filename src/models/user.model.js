@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Logging = require("../logging.js");
 
 // constructor
 const User = function (user) {
@@ -10,13 +11,13 @@ const User = function (user) {
 User.findById = (userId, result) => {
   sql.query(`SELECT * FROM users WHERE id = ${userId} LIMIT 1`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
 
     if (res.length) {
-      //console.log("found user: ", res[0]);
+      //Logging.log("found user: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -32,13 +33,13 @@ User.findByName = (userName, result) => {
     `SELECT * FROM users WHERE name = "${userName}" LIMIT 1`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(err, null);
         return;
       }
 
       if (res.length) {
-        //console.log("found user: ", res[0]);
+        //Logging.log("found user: ", res[0]);
         result(null, res[0]);
         return;
       }

@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Logging = require("../logging.js");
 
 // constructor
 const Post_Category = function (post_category) {
@@ -13,11 +14,11 @@ Post_Category.create = (newAssocs, result) => {
     [newAssocs],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(err, null);
         return;
       }
-      console.log("created assoc ", { id: res.insertId, ...newAssocs });
+      Logging.log("created assoc " + { id: res.insertId, ...newAssocs });
       result(null, { id: res.insertId, ...newAssocs });
     }
   );
@@ -27,13 +28,13 @@ Post_Category.create = (newAssocs, result) => {
 Post_Category.findById = (assocId, result) => {
   sql.query(`SELECT * FROM posts WHERE id = ${assocId} LIMIT 1`, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
 
     if (res.length) {
-      //console.log("found assoc: ", res[0]);
+      //Logging.log("found assoc: " + res[0]);
       result(null, res[0]);
       return;
     }
@@ -47,12 +48,12 @@ Post_Category.findById = (assocId, result) => {
 Post_Category.getAll = (result) => {
   sql.query("SELECT * FROM posts_categories", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    //console.log("assocs: ", res);
+    //Logging.log("assocs: " + res);
     result(null, res);
   });
 };
@@ -64,7 +65,7 @@ Post_Category.updateById = (id, assoc, result) => {
     [assoc.post_id, assoc.category_id, id],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
@@ -75,7 +76,7 @@ Post_Category.updateById = (id, assoc, result) => {
         return;
       }
 
-      console.log("updated assoc: ", { id: id, ...assoc });
+      Logging.log("updated assoc: ", { id: id, ...assoc });
       result(null, { id: id, ...assoc });
     }
   );
@@ -85,7 +86,7 @@ Post_Category.updateById = (id, assoc, result) => {
 Post_Category.remove = (id, result) => {
   sql.query("DELETE FROM posts_categories WHERE id = ?", id, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
@@ -96,7 +97,7 @@ Post_Category.remove = (id, result) => {
       return;
     }
 
-    console.log("deleted assoc with id: ", id);
+    Logging.log("deleted assoc with id: " + id);
     result(null, res);
   });
 };
@@ -105,12 +106,12 @@ Post_Category.remove = (id, result) => {
 Post_Category.removeAll = (result) => {
   sql.query("DELETE FROM posts_categories", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} assocs`);
+    Logging.log(`deleted ${res.affectedRows} assocs`);
     result(null, res);
   });
 };
@@ -122,12 +123,12 @@ Post_Category.removeAllByPost = (postId, result) => {
     postId,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
 
-      console.log("deleted assoc with post id: ", postId);
+      Logging.log("deleted assoc with post id: ", postId);
       result(null, res);
     }
   );

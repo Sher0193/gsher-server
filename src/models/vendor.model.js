@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Logging = require("../logging.js");
 
 // constructor
 const Vendor = function (vendor) {
@@ -10,11 +11,11 @@ const Vendor = function (vendor) {
 Vendor.create = (newVendor, result) => {
   sql.query("INSERT INTO vendors SET ?", newVendor, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(err, null);
       return;
     }
-    console.log("created vendor ", { id: res.insertId, ...newVendor });
+    Logging.log("created vendor ", { id: res.insertId, ...newVendor });
     result(null, { id: res.insertId, ...newVendor });
   });
 };
@@ -24,13 +25,13 @@ Vendor.findById = (vendId, result) => {
     `SELECT * FROM vendors WHERE id = ${vendId} LIMIT 1`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(err, null);
         return;
       }
 
       if (res.length) {
-        //console.log("found vendor: ", res[0]);
+        //Logging.log("found vendor: ", res[0]);
         result(null, res[0]);
         return;
       }
@@ -44,12 +45,12 @@ Vendor.findById = (vendId, result) => {
 Vendor.getAll = (result) => {
   sql.query("SELECT * FROM vendors", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    //console.log("vendors: ", res);
+    //Logging.log("vendors: ", res);
     result(null, res);
   });
 };
@@ -60,7 +61,7 @@ Vendor.updateById = (vendId, vendor, result) => {
     [vendor.vendor_name, vendor.vendor_link, vendor.vendor_phone, vendId],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        Logging.log("error: ", err);
         result(null, err);
         return;
       }
@@ -71,7 +72,7 @@ Vendor.updateById = (vendId, vendor, result) => {
         return;
       }
 
-      console.log("updated vendor: ", { id: vendId, ...vendor });
+      Logging.log("updated vendor: ", { id: vendId, ...vendor });
       result(null, { id: vendId, ...vendor });
     }
   );
@@ -80,7 +81,7 @@ Vendor.updateById = (vendId, vendor, result) => {
 Vendor.remove = (vendId, result) => {
   sql.query("DELETE FROM vendors WHERE id = ?", vendId, (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
@@ -91,7 +92,7 @@ Vendor.remove = (vendId, result) => {
       return;
     }
 
-    console.log("deleted vendor with id: ", vendId);
+    Logging.log("deleted vendor with id: ", vendId);
     result(null, res);
   });
 };
@@ -99,12 +100,12 @@ Vendor.remove = (vendId, result) => {
 Vendor.removeAll = (result) => {
   sql.query("DELETE FROM vendors", (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      Logging.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} vendors`);
+    Logging.log(`deleted ${res.affectedRows} vendors`);
     result(null, res);
   });
 };

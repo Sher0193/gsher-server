@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const Logging = require("../logging.js");
 
 exports.getStatement = (req, res) => {
   try {
@@ -24,9 +25,9 @@ exports.postStatement = (req, res) => {
     });
   }
   const body = req.body;
-  console.log(body);
+  Logging.log(body);
   jsonLines = JSON.stringify(body.lines);
-  console.log(jsonLines);
+  Logging.log(jsonLines);
   fs.writeFile(
     path.join(__dirname, "../../public/files/statement.json"),
     jsonLines,
@@ -69,9 +70,9 @@ exports.postAbout = (req, res) => {
     });
   }
   const body = req.body;
-  console.log(body);
+  Logging.log(body);
   jsonLines = JSON.stringify(body.lines);
-  console.log(jsonLines);
+  Logging.log(jsonLines);
   fs.writeFile(
     path.join(__dirname, "../../public/files/about.json"),
     jsonLines,

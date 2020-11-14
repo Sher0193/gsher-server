@@ -1,5 +1,6 @@
 const Post = require("../models/post.model.js");
 const PostCategories = require("../models/post_category.model.js");
+const Logging = require("../logging.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -8,14 +9,14 @@ exports.create = (req, res) => {
     });
   }
   const body = req.body;
-  //console.log(body);
+  //Logging.log(body);
   const post = new Post({
     name: body.name,
     dimensions: body.dimensions,
     meta: body.meta,
     link: body.filename,
     price: parseInt(body.price),
-    sold: body.sold === "true" ? 1 : 0,
+    sold: body.sold,
     date_painted: body.date,
     featured: body.featured === "true" ? 1 : 0,
     vendor: body.vendor && body.vendor >= 0 ? body.vendor : null,
@@ -61,7 +62,7 @@ exports.findMany = (req, res) => {
       else res.send({ success: true, data: data });
     });
   } else if (req.query.tags) {
-    //console.log(req.query.tags);
+    //Logging.log(req.query.tags);
     Post.getByCategories("date_painted", req.query.tags, (err, data) => {
       if (err)
         res.status(500).send({
@@ -134,7 +135,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!",
     });
   }
-  //console.log(req.body);
+  //Logging.log(req.body);
   const body = req.body;
   Post.updateById(
     req.params.postId,

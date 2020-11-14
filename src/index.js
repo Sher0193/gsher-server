@@ -7,6 +7,7 @@ const fs = require("fs");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 const db = require("./models/db.js");
+const Logging = require("./logging.js");
 
 const config = require("../private/config.json");
 
@@ -17,7 +18,7 @@ app.use(express.json());
 // initial db connection
 db.connect(function (err) {
   if (err) {
-    console.log("Database connection error.");
+    Logging.log("Database connection error.");
     throw err;
     return false;
   }
@@ -78,11 +79,11 @@ require("./routes/routes.js")(app);
     app
 )
 .listen(443, function() {
-    console.log('HTTPS listening on PORT 443');
+    Logging.log('HTTPS listening on PORT 443');
 });*/
 
 app.listen(config.port, "0.0.0.0", () => {
-  console.log("running on port " + config.port);
+  Logging.log("running on port " + config.port);
 });
 
 app.get("*", function (req, res) {

@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const Logging = require("../logging.js");
 
 const config = require("../../private/config.json");
 
@@ -32,7 +33,7 @@ exports.sendMail = (req, res) => {
 
   transporter.sendMail(mailData, (err, info) => {
     if (err) {
-      console.log(err);
+      Logging.log(err);
       res.json({ success: false });
     }
     res.status(200).send({

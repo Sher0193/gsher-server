@@ -3,6 +3,7 @@ const formidable = require("formidable");
 const sharp = require("sharp");
 const fs = require("fs");
 const path = require("path");
+const Logging = require("../logging.js");
 
 const featuredDir = path.join(__dirname, "../../public/img/featured");
 
@@ -79,7 +80,7 @@ exports.deleteImage = (req, res) => {
         msg: "Removed thumbnail and image file " + req.body.filename,
       });
     } catch (e) {
-      console.log(e);
+      Logging.log(e);
       res.json({
         success: false,
         msg: "Issue removing files.",
@@ -93,7 +94,7 @@ exports.featured = (req, res) => {
   fs.readdir(featuredDir, function (err, files) {
     //handling error
     if (err) {
-      console.log("Unable to scan directory: " + err);
+      Logging.log("Unable to scan directory: " + err);
       res.json({
         success: false,
         msg: "Unable to scan directory " + featuredDir,
