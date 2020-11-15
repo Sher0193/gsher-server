@@ -18,7 +18,7 @@ Post_Category.create = (newAssocs, result) => {
         result(err, null);
         return;
       }
-      Logging.log("created assoc " + { id: res.insertId, ...newAssocs });
+      Logging.log("created assoc ", { id: res.insertId, ...newAssocs });
       result(null, { id: res.insertId, ...newAssocs });
     }
   );
@@ -34,7 +34,7 @@ Post_Category.findById = (assocId, result) => {
     }
 
     if (res.length) {
-      //Logging.log("found assoc: " + res[0]);
+      //Logging.log("found assoc: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -53,7 +53,7 @@ Post_Category.getAll = (result) => {
       return;
     }
 
-    //Logging.log("assocs: " + res);
+    //Logging.log("assocs: ", res);
     result(null, res);
   });
 };
@@ -97,7 +97,7 @@ Post_Category.remove = (id, result) => {
       return;
     }
 
-    Logging.log("deleted assoc with id: " + id);
+    Logging.log("deleted assoc with id: ", id);
     result(null, res);
   });
 };
