@@ -19,10 +19,12 @@ exports.logIn = (req, res) => {
   User.findByName(username, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
+        Logging.log("*** Invalid log in attempt with invalid username " + username + ".");
         res.status(404).send({
           message: `Not found User with username ${username}.`,
         });
       } else {
+        Logging.log("Miscellaneous log in error with username " + username + ".");
         res.status(500).send({
           message: "Error retrieving User with name " + username,
         });
@@ -38,6 +40,7 @@ exports.logIn = (req, res) => {
 
           return;
         } else {
+          Logging.log("*** Invalid log in attempt with invalid password by " + username + ".");
           res.json({
             success: false,
             msg: "Invalid password.",
