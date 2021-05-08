@@ -21,7 +21,7 @@ exports.logIn = (req, res) => {
       if (err.kind === "not_found") {
         Logging.log("*** Invalid log in attempt with invalid username " + username + ".");
         res.status(404).send({
-          message: `Not found User with username ${username}.`,
+          message: `Invalid username or password.`,
         });
       } else {
         Logging.log("Miscellaneous log in error with username " + username + ".");
@@ -43,7 +43,7 @@ exports.logIn = (req, res) => {
           Logging.log("*** Invalid log in attempt with invalid password by " + username + ".");
           res.json({
             success: false,
-            msg: "Invalid password.",
+            msg: "Invalid username or password.",
           });
         }
       });

@@ -15,6 +15,6 @@ module.exports = (app) => {
 
   app.use("/api/analytics/", [
     auth.authenticate,
-    express.static("private/report.html"),
+    express.static(path.join(__dirname, "../../private/report.html")),
   ]);
 };
